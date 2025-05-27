@@ -54,6 +54,7 @@ RUN --mount=type=bind,source=.shared,target=/mnt/shared <<EOF
     libseccomp-dev \
     `# additional packages required for proxying HSM:` \
     openssh-server-pam \
+    openssh-keygen \
     tzdata \
     sudo
 
