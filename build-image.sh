@@ -6,7 +6,7 @@
 # SPDX-ArtifactOfProjectHomePage: https://github.com/vegardit/docker-softhsm2-pkcs11-proxy
 
 shared_lib="$(dirname "${BASH_SOURCE[0]}")/.shared"
-[[ -e $shared_lib ]] || curl -sSfL "https://raw.githubusercontent.com/vegardit/docker-shared/v1/download.sh?_=$(date +%s)" | bash -s v1 "$shared_lib" || exit 1
+[[ -e $shared_lib ]] || curl -sSfL "https://raw.githubusercontent.com/mariowi/docker-shared/v1/download.sh?_=$(date +%s)" | bash -s v1 "$shared_lib" || exit 1
 # shellcheck disable=SC1091  # Not following: $shared_lib/lib/build-image-init.sh was not specified as input
 source "$shared_lib/lib/build-image-init.sh"
 
@@ -14,7 +14,7 @@ source "$shared_lib/lib/build-image-init.sh"
 #################################################
 # declare image meta
 #################################################
-image_repo=${DOCKER_IMAGE_REPO:-vegardit/softhsm2-pkcs11-proxy}
+image_repo=${DOCKER_IMAGE_REPO:-mariowi/softhsm2-pkcs11-proxy}
 base_image=${DOCKER_BASE_IMAGE:-alpine:3}
 case $base_image in
   *alpine*) base_image_linux_flavor=alpine ;;
@@ -139,6 +139,7 @@ build_opts=(
   --build-arg GIT_COMMIT_DATE="$(date -d "@$(git log -1 --format='%at')" --utc +'%Y-%m-%d %H:%M:%S UTC')"
   --build-arg SOFTHSM_SOURCE_URL="$softhsm_source_url"
   --build-arg PKCS11_PROXY_SOURCE_URL="https://codeload.github.com/smallstep/pkcs11-proxy/tar.gz/refs/heads/master"
+  --build-arg TZ="${TZ:-"Europe/​Berlin"}"
   #--build-arg PKCS11_PROXY_SOURCE_URL="https://codeload.github.com/scobiej/pkcs11-proxy/tar.gz/refs/heads/osx-openssl1-1"
   #--build-arg PKCS11_PROXY_SOURCE_URL="https://codeload.github.com/SUNET/pkcs11-proxy/tar.gz/refs/heads/master"
   --build-arg INSTALL_SUPPORT_TOOLS="${INSTALL_SUPPORT_TOOLS:-0}"
