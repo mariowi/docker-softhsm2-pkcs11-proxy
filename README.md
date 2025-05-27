@@ -1,10 +1,19 @@
-# vegardit/docker-softhsm2-pkcs11-proxy <a href="https://github.com/vegardit/docker-softhsm2-pkcs11-proxy/" title="GitHub Repo"><img height="30" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg?sanitize=true"></a>
 
-[![Build Status](https://github.com/vegardit/docker-softhsm2-pkcs11-proxy/workflows/Build/badge.svg "GitHub Actions")](https://github.com/vegardit/docker-softhsm2-pkcs11-proxy/actions?query=workflow%3ABuild)
-[![License](https://img.shields.io/github/license/vegardit/docker-softhsm2-pkcs11-proxy.svg?label=license)](#license)
-[![Docker Pulls](https://img.shields.io/docker/pulls/vegardit/softhsm2-pkcs11-proxy.svg)](https://hub.docker.com/r/vegardit/softhsm2-pkcs11-proxy)
-[![Docker Stars](https://img.shields.io/docker/stars/vegardit/softhsm2-pkcs11-proxy.svg)](https://hub.docker.com/r/vegardit/softhsm2-pkcs11-proxy)
+# MarioWi/docker-softhsm2-pkcs11-proxy <a href="https://github.com/MarioWi/docker-softhsm2-pkcs11-proxy/" title="GitHub Repo"><img height="30" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg?sanitize=true"></a>
+
+> [!IMPORTANT]
+> This is a Fork from [vegardit/docker-softhsm2-pkcs11-proxy](https://github.com/vegardit/docker-softhsm2-pkcs11-proxy/) as a Working Copy to experiment. This repo should be treated as what it is: **WIP**, and should definitely not be used in production at this time!
+>
+> In this case, you should revert to the original repo.
+
+
+
+[![Build Status](https://github.com/mariowi/docker-softhsm2-pkcs11-proxy/workflows/Build/badge.svg "GitHub Actions")](https://github.com/mariowi/docker-softhsm2-pkcs11-proxy/actions?query=workflow%3ABuild)
+[![License](https://img.shields.io/github/license/mariowi/docker-softhsm2-pkcs11-proxy.svg?label=license)](#license)
+[![Docker Pulls](https://img.shields.io/docker/pulls/mariowi/softhsm2-pkcs11-proxy.svg)](https://hub.docker.com/r/mariowi/softhsm2-pkcs11-proxy)
+[![Docker Stars](https://img.shields.io/docker/stars/mariowi/softhsm2-pkcs11-proxy.svg)](https://hub.docker.com/r/mariowi/softhsm2-pkcs11-proxy)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+![Static Badge](https://img.shields.io/badge/Status-WIP-red)
 
 1. [What is it?](#what-is-it)
 1. [Docker image tagging scheme](#tags)
@@ -37,7 +46,7 @@ Client applications can communicate with the HSM via TCP/TLS using libpkcs11-pro
 |`:2.x` <br> `:2.x-alpine` | weekly build of the latest minor version of the respective <br> major release, e.g. `2.x` may contain release `2.6` | alpine:3
 |`:2.x-debian` | weekly build of the latest minor version of the respective <br> major release, e.g. `2.x` may contain release `2.6` | debian:stable-slim
 
-See all tags at https://hub.docker.com/r/vegardit/softhsm2-pkcs11-proxy/tags
+See all tags at https://hub.docker.com/r/mariowi/softhsm2-pkcs11-proxy/tags
 
 
 ## <a name="usage"></a>Usage
@@ -70,7 +79,7 @@ Examples:
 
 1. Running with default test configuration:
     ```bash
-    docker run -it -name softhsm vegardit/docker-softhsm2-pkcs11-proxy
+    docker run -it -name softhsm mariowi/docker-softhsm2-pkcs11-proxy
     ```
 
 1. Running with custom settings:
@@ -89,7 +98,7 @@ Examples:
        # mount config and data directories:
        -v /path/to/config:/mnt/config:ro \
        -v /path/to/data:/var/lib/softhsm:rw \
-       vegardit/docker-softhsm2-pkcs11-proxy:latest
+       mariowi/docker-softhsm2-pkcs11-proxy:latest
     ```
 
 1. Same as docker-compose file:
@@ -100,7 +109,7 @@ Examples:
     services:
 
       softhsm-server:
-        image: vegardit/softhsm2-pkcs11-proxy:latest
+        image: mariowi/softhsm2-pkcs11-proxy:latest
         environment:
           TOKEN_LABEL: MyToken # define a custom token name
           TOKEN_USER_PIN_FILE: /mnt/config/token_user_pin # use custom pin stored in file
@@ -141,7 +150,7 @@ This is a simple exercise to get you familiar with how a client container can in
     $ docker run -it --rm \
         --net softhsm-net \
         --hostname softhsm-server \
-        vegardit/softhsm2-pkcs11-proxy:latest
+        mariowi/softhsm2-pkcs11-proxy:latest
 
     # in a second terminal window start the client:
     $ docker run -it --rm \
