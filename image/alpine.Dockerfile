@@ -51,7 +51,11 @@ RUN --mount=type=bind,source=.shared,target=/mnt/shared <<EOF
     `# additional packages required by pkcs11-proxy:` \
     bash \
     cmake \
-    libseccomp-dev
+    libseccomp-dev \
+    `# additional packages required for proxying HSM:` \
+    openssh-server-pam \
+    tzdata \
+    sudo
 
 EOF
 
@@ -139,7 +143,7 @@ COPY .shared/lib/bash-init.sh /opt/bash-init.sh
 
 # Default configuration: can be overridden at the docker command line
 ENV \
-  INIT_SH_FILE='/opt/init-token.sh' \
+  INIT_SH_FILE='/opt/init.sh' \
   #
   TOKEN_AUTO_INIT=1 \
   TOKEN_LABEL="Test Token" \
@@ -152,7 +156,8 @@ ENV \
   SOFTHSM_STORAGE=file \
   #
   PKCS11_DAEMON_SOCKET="tls://0.0.0.0:2345" \
-  PKCS11_PROXY_TLS_PSK_FILE="/opt/test.tls.psk"
+  PKCS11_PROXY_TLS_PSK_FILE="/opt/test.tls.psk" \
+  TZ="Europe/Berlin"
 
 ARG OCI_authors
 ARG OCI_title
@@ -195,8 +200,10 @@ EOT
 EOF
 
 EXPOSE 2345
+EXPOSE 22
 
 VOLUME "/var/lib/softhsm/"
+VOLUME "/etc/ssh/"
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
