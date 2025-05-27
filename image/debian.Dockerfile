@@ -162,7 +162,7 @@ ENV \
   #
   PKCS11_DAEMON_SOCKET="tls://0.0.0.0:2345" \
   PKCS11_PROXY_TLS_PSK_FILE="/opt/test.tls.psk" \
-  TZ=${TZ}
+  TZ="Europe/Berlin"
 
 ARG OCI_authors
 ARG OCI_title
