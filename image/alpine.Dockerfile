@@ -53,7 +53,7 @@ RUN --mount=type=bind,source=.shared,target=/mnt/shared <<EOF
     cmake \
     libseccomp-dev \
     `# additional packages required for proxying HSM:` \
-    openssh-client \
+    openssh \
     openssh-server-pam \
     tzdata \
     sudo
