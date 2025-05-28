@@ -17,6 +17,7 @@ source "$shared_lib/lib/build-image-init.sh"
 image_repo=${DOCKER_IMAGE_REPO:-mariowi/softhsm2-pkcs11-proxy}
 base_image=${DOCKER_BASE_IMAGE:-alpine:3}
 case $base_image in
+  *linuxserver/openssh-server*) base_image_linux_flavor=openssh ;;
   *alpine*) base_image_linux_flavor=alpine ;;
   *debian*) base_image_linux_flavor=debian ;;
   *) echo "ERROR: Unsupported base image $base_image"; exit 1 ;;
@@ -122,6 +123,7 @@ trap 'docker buildx rm --force "$builder_name"' EXIT
 image_name=image_repo:${tags[0]}
 
 case $base_image in
+  *linuxserver/openssh-server*) base_image_linux_flavor=openssh ;;
   *alpine*) dockerfile="alpine.Dockerfile" ;;
   *debian*) dockerfile="debian.Dockerfile" ;;
   *) echo "ERROR: Unsupported base image $base_image"; exit 1 ;;
