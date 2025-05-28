@@ -146,7 +146,7 @@ jobs:
 
     - name: Build ${{ env.DOCKER_REPO_NAME }}:${{ matrix.SOFTHSM_VERSION }}
       env:
-        DOCKER_BASE_IMAGE: ghcr.io/dockerhub-mirror/${{ matrix.DOCKER_BASE_IMAGE }}
+        DOCKER_BASE_IMAGE: ${{ matrix.DOCKER_BASE_IMAGE }}
         DOCKER_IMAGE_REPO: ${{ github.repository_owner }}/${{ env.DOCKER_REPO_NAME }}
         SOFTHSM_VERSION: ${{ matrix.SOFTHSM_VERSION }}
         TRIVY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
