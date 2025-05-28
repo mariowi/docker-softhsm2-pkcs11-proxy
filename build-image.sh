@@ -51,21 +51,27 @@ declare -A image_meta=(
 
 declare -a tags=()
 if [[ $app_version == develop ]]; then
-  tags+=("develop-$base_image_linux_flavor") # :develop-alpine
+  tags+=("develop-$base_image_linux_flavor") # :develop-debian:stable-slim
   if [[ $base_image_linux_flavor == alpine ]]; then
     tags+=("develop") # :develop
+  elif [[ $base_image_linux_flavor == openssh ]]; then
+    tags+=("develop-openssh") # :develop-openssh
   fi
 else
   if [[ $app_version =~ ^[0-9]+\..*$ ]]; then
-    tags+=("${app_version%%.*}.x-$base_image_linux_flavor") # :2.x-alpine
+    tags+=("${app_version%%.*}.x-$base_image_linux_flavor") # :2.x-debian:stable-slim
     if [[ $base_image_linux_flavor == alpine ]]; then
-      tags+=("${app_version%%.*}.x-$base_image_linux_flavor") # :2.x
+      tags+=("${app_version%%.*}.x-$base_image_linux_flavor") # :2.x-alpine
+    elif [[ $base_image_linux_flavor == openssh ]]; then
+      tags+=("${app_version%%.*}.x-openssh") # :2.x-openssh
     fi
   fi
   if [[ ${app_version_is_latest:-} == 1 ]]; then
-    tags+=("latest-$base_image_linux_flavor") # :latest-alpine
+    tags+=("latest-$base_image_linux_flavor") # :latest-debian:stable-slim
     if [[ $base_image_linux_flavor == alpine ]]; then
       tags+=("latest") # :latest
+    elif [[ $base_image_linux_flavor == openssh ]]; then
+      tags+=("latest-openssh") # :latest-openssh
     fi
   fi
 fi
