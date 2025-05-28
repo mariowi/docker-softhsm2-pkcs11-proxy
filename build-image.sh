@@ -123,7 +123,7 @@ trap 'docker buildx rm --force "$builder_name"' EXIT
 image_name=image_repo:${tags[0]}
 
 case $base_image in
-  *linuxserver/openssh-server*) base_image_linux_flavor=openssh ;;
+  *linuxserver/openssh-server*) dockerfile="alpine.Dockerfile" ;;
   *alpine*) dockerfile="alpine.Dockerfile" ;;
   *debian*) dockerfile="debian.Dockerfile" ;;
   *) echo "ERROR: Unsupported base image $base_image"; exit 1 ;;
