@@ -9,7 +9,7 @@
 
 # https://hub.docker.com/_/alpine/tags?name=3
 # https://github.com/alpinelinux/docker-alpine/blob/master/Dockerfile
-ARG BASE_IMAGE=alpine:3
+ARG BASE_IMAGE=linuxserver/openssh-server
 
 #############################################################
 # build softhsmv2 + pkcs11-proxy
