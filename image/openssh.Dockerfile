@@ -197,7 +197,7 @@ EOF
 EXPOSE 2345
 EXPOSE 2222
 
-VOLUME "/config
+VOLUME "/config/"
 VOLUME "/var/lib/softhsm/"
 
 ENTRYPOINT ["/sbin/tini", "--"]
