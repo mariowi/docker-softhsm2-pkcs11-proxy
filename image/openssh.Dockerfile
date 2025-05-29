@@ -17,77 +17,77 @@ ARG BASE_IMAGE=linuxserver/openssh-server
 
 # https://github.com/hadolint/hadolint/wiki/DL3006 Always tag the version of an image explicitly
 # hadolint ignore=DL3006
-FROM ${BASE_IMAGE} AS builder
+#FROM ${BASE_IMAGE} AS builder
 
-SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
+#SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
-ARG SOFTHSM_SOURCE_URL
-ARG PKCS11_PROXY_SOURCE_URL
+#ARG SOFTHSM_SOURCE_URL
+#ARG PKCS11_PROXY_SOURCE_URL
 
-ARG BASE_LAYER_CACHE_KEY
+#ARG BASE_LAYER_CACHE_KEY
 
 # https://github.com/hadolint/hadolint/wiki/DL3018 Pin versions
 # hadolint ignore=DL3018
-RUN --mount=type=bind,source=.shared,target=/mnt/shared <<EOF
-  /mnt/shared/cmd/alpine-install-os-updates.sh
-
-  echo "#################################################"
-  echo "Installing required dev packages..."
-  echo "#################################################"
-  apk add --no-cache \
-    `# required by curl:` \
-    ca-certificates \
-    curl \
-    `# required for autogen.sh:` \
-    autoconf \
-    automake \
-    libtool \
-    `# required for configure/make:` \
-    build-base \
-    openssl-dev \
-    `# additional packages required by softhsm:` \
-    sqlite \
-    sqlite-dev \
-    `# additional packages required by pkcs11-proxy:` \
-    bash \
-    cmake \
-    libseccomp-dev
-
-EOF
-
-# https://github.com/hadolint/hadolint/wiki/DL3003 Use WORKDIR to switch to a directory
-# hadolint ignore=DL3003
-RUN <<EOF
-  echo "#################################################"
-  echo "Building softhsm2 ..."
-  echo "#################################################"
-  echo "Downloading [$SOFTHSM_SOURCE_URL]..."
-  curl -fsS "$SOFTHSM_SOURCE_URL" | tar xvz
-  mv SoftHSMv2-* softhsm2
-  cd softhsm2 || exit 1
-  sh ./autogen.sh
-  ./configure --with-objectstore-backend-db --disable-dependency-tracking
-  make
-  make install
-  softhsm2-util --version
-
-EOF
-
+#RUN --mount=type=bind,source=.shared,target=/mnt/shared <<EOF
+#  /mnt/shared/cmd/alpine-install-os-updates.sh
+#
+#  echo "#################################################"
+#  echo "Installing required dev packages..."
+#  echo "#################################################"
+#  apk add --no-cache \
+#    `# required by curl:` \
+#    ca-certificates \
+#    curl \
+#    `# required for autogen.sh:` \
+#    autoconf \
+#    automake \
+#    libtool \
+#    `# required for configure/make:` \
+#    build-base \
+#    openssl-dev \
+#    `# additional packages required by softhsm:` \
+#    sqlite \
+#    sqlite-dev \
+#    `# additional packages required by pkcs11-proxy:` \
+#    bash \
+#    cmake \
+#    libseccomp-dev
+#
+#EOF
 
 # https://github.com/hadolint/hadolint/wiki/DL3003 Use WORKDIR to switch to a directory
 # hadolint ignore=DL3003
-RUN <<EOF
-  echo "#################################################"
-  echo "Buildding pkcs11-proxy ..."
-  echo "#################################################"
-  curl -fsS "$PKCS11_PROXY_SOURCE_URL" | tar xvz
-  mv pkcs11-proxy-* pkcs11-proxy
-  cd pkcs11-proxy || exit 1
-  cmake .
-  make
-  make install
+#RUN <<EOF
+#  echo "#################################################"
+#  echo "Building softhsm2 ..."
+#  echo "#################################################"
+#  echo "Downloading [$SOFTHSM_SOURCE_URL]..."
+#  curl -fsS "$SOFTHSM_SOURCE_URL" | tar xvz
+#  mv SoftHSMv2-* softhsm2
+#  cd softhsm2 || exit 1
+#  sh ./autogen.sh
+#  ./configure --with-objectstore-backend-db --disable-dependency-tracking
+#  make
+#  make install
+#  softhsm2-util --version
+#
+#EOF
 
-EOF
+
+# https://github.com/hadolint/hadolint/wiki/DL3003 Use WORKDIR to switch to a directory
+# hadolint ignore=DL3003
+#RUN <<EOF
+#  echo "#################################################"
+#  echo "Buildding pkcs11-proxy ..."
+#  echo "#################################################"
+#  curl -fsS "$PKCS11_PROXY_SOURCE_URL" | tar xvz
+#  mv pkcs11-proxy-* pkcs11-proxy
+#  cd pkcs11-proxy || exit 1
+#  cmake .
+#  make
+#  make install
+#
+#EOF
 
 
 #############################################################
@@ -123,15 +123,15 @@ RUN --mount=type=bind,source=.shared,target=/mnt/shared <<EOF
 EOF
 
 # copy softhsm2
-COPY --from=builder /etc/softhsm* /etc/
-COPY --from=builder /usr/local/bin/softhsm* /usr/local/bin/
-COPY --from=builder /usr/local/lib/softhsm/libsofthsm2.so /usr/local/lib/softhsm/libsofthsm2.so
-COPY --from=builder /usr/local/share/man/man1/softhsm* /usr/local/share/man/man1/
-COPY --from=builder /usr/local/share/man/man5/softhsm* /usr/local/share/man/man5/
+#COPY --from=builder /etc/softhsm* /etc/
+#COPY --from=builder /usr/local/bin/softhsm* /usr/local/bin/
+#COPY --from=builder /usr/local/lib/softhsm/libsofthsm2.so /usr/local/lib/softhsm/libsofthsm2.so
+#COPY --from=builder /usr/local/share/man/man1/softhsm* /usr/local/share/man/man1/
+#COPY --from=builder /usr/local/share/man/man5/softhsm* /usr/local/share/man/man5/
 
 # copy pkcs11-proxy
-COPY --from=builder /usr/local/bin/pkcs11-* /usr/local/bin/
-COPY --from=builder /usr/local/lib/libpkcs11-proxy* /usr/local/lib/
+#COPY --from=builder /usr/local/bin/pkcs11-* /usr/local/bin/
+#COPY --from=builder /usr/local/lib/libpkcs11-proxy* /usr/local/lib/
 
 COPY image/*.sh /opt
 COPY image/test.* /opt
